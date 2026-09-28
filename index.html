@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Architecture Refactoring &amp; Decoupling | AR Gesture Presentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <!-- MediaPipe Hands & Camera Utils CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <!-- Background Glow & Grid -->
+  <div class="bg-grid"></div>
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+
+  <header class="deck-header">
+    <div class="brand">
+      <div class="brand-badge"><span class="pulse-dot"></span> ARCHITECTURE REFACTORING</div>
+      <span class="brand-sub">Home Lighting Analogy • AR Gesture Presentation</span>
+    </div>
+    
+    <div class="deck-controls">
+      <button id="toggleWebcamBtn" class="pill-btn" title="Enable/Disable MediaPipe Live Camera">
+        <svg class="icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+        <span id="webcamStatusText">AR Camera: Off (Simulation Mode)</span>
+      </button>
+      <div class="slide-indicator">
+        <span id="currentSlideNum">1</span><span class="slash">/</span><span id="totalSlidesNum">3</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Slide Viewport (Hero AR Stage Focused) -->
+  <main class="presentation-viewport">
+    
+    <!-- SLIDE 1 -->
+    <section class="slide-pane active" id="slide-1" data-slide="1">
+      <div class="hero-stage-container">
+        
+        <!-- Header Banner -->
+        <div class="stage-banner">
+          <div class="banner-left">
+            <span class="slide-tag tag-legacy"><span class="tag-icon">⚠️</span> THE LEGACY STATE</span>
+            <span class="analogy-pill analogy-danger">💡 The Old Master Switch</span>
+            <h1 class="stage-title">Legacy System: Rigid Coupling &amp; Single Point of Failure</h1>
+          </div>
+          <div class="banner-right">
+            <span class="stage-gesture-tag" id="slide1GestureDetected">AR Gesture: Ready (Pinch to Grab)</span>
+          </div>
+        </div>
+
+        <!-- Full-Width AR Canvas Frame -->
+        <div class="stage-frame">
+          <div class="canvas-wrapper">
+            <canvas id="canvas-slide-1" width="1200" height="660"></canvas>
+            
+            <!-- Quick Gesture Trigger Overlay Bar -->
+            <div class="floating-gesture-hud">
+              <span class="hud-label">⚡ PRESENTATION GESTURE ACTION:</span>
+              <button class="sim-btn" onclick="simulateGesture('pinchShake')">🤌 Pinch &amp; Grab Workflow A (Shake Monolith)</button>
+              <button class="sim-btn" onclick="simState.slide1.masterSwitchOn = !simState.slide1.masterSwitchOn; simState.slide1.bulbsOn = simState.slide1.masterSwitchOn;">💡 Click Master Switch (Toggle All Bulbs)</button>
+            </div>
+
+            <!-- Static Visual Reference overlay thumbnail -->
+            <div class="reference-badge" onclick="openAssetModal('assets/legacy_coupled_slide_1790479414240.jpg')">
+              <img src="assets/legacy_coupled_slide_1790479414240.jpg" alt="Slide 1 Blueprint Render">
+              <span>View Blueprint</span>
+            </div>
+          </div>
+
+          <div class="stage-footer">
+            <div class="wire-legend">
+              <span class="legend-item"><span class="dot red"></span> Red Glowing Dependency Cord</span>
+              <span class="legend-item"><span class="dot yellow"></span> Fault Vibration Vector</span>
+              <span class="legend-item"><span class="dot matrix-dot"></span> 3D Matrix Code Data Hand &amp; Gesture Tracking</span>
+            </div>
+            <div class="gesture-hint">
+              <strong>AR Presenter Cue:</strong> Click on the Master Switch (bottom center hexagon) to light up all three bulbs simultaneously. Click again to turn them all off.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SLIDE 2 -->
+    <section class="slide-pane" id="slide-2" data-slide="2">
+      <div class="hero-stage-container">
+        
+        <!-- Header Banner -->
+        <div class="stage-banner">
+          <div class="banner-left">
+            <span class="slide-tag tag-refactor"><span class="tag-icon">✂️</span> THE REFACTORING ACTION</span>
+            <span class="analogy-pill analogy-action">🛠️ The Electrician's Remodel</span>
+            <h1 class="stage-title">The Refactor: Severing Dependencies &amp; Isolating Modules</h1>
+          </div>
+          <div class="banner-right">
+            <span class="stage-gesture-tag" id="slide2GestureDetected">AR Gesture: Ready (Scissor Cut)</span>
+          </div>
+        </div>
+
+        <!-- Full-Width AR Canvas Frame -->
+        <div class="stage-frame">
+          <div class="canvas-wrapper">
+            <canvas id="canvas-slide-2" width="1200" height="660"></canvas>
+            
+            <!-- Quick Gesture Trigger Overlay Bar -->
+            <div class="floating-gesture-hud">
+              <span class="hud-label">⚡ PRESENTATION GESTURE ACTION:</span>
+              <button class="sim-btn" onclick="simulateGesture('sliceCut')">✂️ Scissor Cut A↔B (Sever Connection)</button>
+              <button class="sim-btn" onclick="simulateGesture('sliceCutBC')">✂️ Scissor Cut B↔C (Sever Connection)</button>
+              <button class="sim-btn secondary" onclick="simulateGesture('resetSlide2')">↺ Reset Circuit</button>
+            </div>
+
+            <!-- Static Visual Reference overlay thumbnail -->
+            <div class="reference-badge" onclick="openAssetModal('assets/refactor_sever_slide_1790479430628.jpg')">
+              <img src="assets/refactor_sever_slide_1790479430628.jpg" alt="Slide 2 Blueprint Render">
+              <span>View Blueprint</span>
+            </div>
+          </div>
+
+          <div class="stage-footer">
+            <div class="wire-legend">
+              <span class="legend-item"><span class="dot orange"></span> Severed Cable Dissolution Embers</span>
+              <span class="legend-item"><span class="dot teal"></span> Insulated Isolated Module Boundary</span>
+              <span class="legend-item"><span class="dot matrix-dot"></span> Dual 3D Matrix Data Hands</span>
+            </div>
+            <div class="gesture-hint">
+              <strong>AR Presenter Cue:</strong> Use scissor gesture to cut the red dependency cord connecting both modules.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SLIDE 3 -->
+    <section class="slide-pane" id="slide-3" data-slide="3">
+      <div class="hero-stage-container">
+        
+        <!-- Header Banner -->
+        <div class="stage-banner">
+          <div class="banner-left">
+            <span class="slide-tag tag-target"><span class="tag-icon">✨</span> THE TARGET ARCHITECTURE</span>
+            <span class="analogy-pill analogy-success">🏠 The Modern Smart Room Hub</span>
+            <h1 class="stage-title">Target Architecture: Centralized Orchestration &amp; Independent Execution</h1>
+          </div>
+          <div class="banner-right">
+            <span class="stage-gesture-tag" id="slide3GestureDetected">AR Gesture: Ready (Index Tap to Fire)</span>
+          </div>
+        </div>
+
+        <!-- Full-Width AR Canvas Frame -->
+        <div class="stage-frame">
+          <div class="canvas-wrapper">
+            <canvas id="canvas-slide-3" width="1200" height="660"></canvas>
+            
+            <!-- Quick Gesture Trigger Overlay Bar -->
+            <div class="floating-gesture-hud">
+              <span class="hud-label">⚡ PRESENTATION GESTURE ACTIONS:</span>
+              <button class="sim-btn" onclick="simulateGesture('tapWorkflowA')">☝️ Tap Workflow A</button>
+              <button class="sim-btn" onclick="simulateGesture('tapWorkflowB')">☝️ Tap Workflow B</button>
+              <button class="sim-btn" onclick="simulateGesture('tapWorkflowC')">☝️ Tap Workflow C</button>
+              <button class="sim-btn secondary" onclick="simulateGesture('openPalmReveal')">✨ Tap Hub (Telemetry Pulse)</button>
+            </div>
+
+            <!-- Static Visual Reference overlay thumbnail -->
+            <div class="reference-badge" onclick="openAssetModal('assets/target_arch_slide_1790479451716.jpg')">
+              <img src="assets/target_arch_slide_1790479451716.jpg" alt="Slide 3 Blueprint Render">
+              <span>View Blueprint</span>
+            </div>
+          </div>
+
+          <div class="stage-footer">
+            <div class="wire-legend">
+              <span class="legend-item"><span class="dot cyan"></span> Smart Hub Dispatch Bus</span>
+              <span class="legend-item"><span class="dot bright-blue"></span> Directed Event Pulse</span>
+              <span class="legend-item"><span class="dot white"></span> MediaPipe 21-pt Precision Index Tap</span>
+            </div>
+            <div class="gesture-hint">
+              <strong>AR Presenter Cue:</strong> Tap any workflow with index finger to route isolated signal through Central Hub.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SLIDE 4 -->
+    <section class="slide-pane" id="slide-4" data-slide="4">
+      <div class="hero-stage-container">
+        
+        <!-- Header Banner -->
+        <div class="stage-banner">
+          <div class="banner-left">
+            <span class="slide-tag tag-legacy"><span class="tag-icon">⚡</span> NINJA AR MAGIC</span>
+            <span class="analogy-pill analogy-danger">🌀 The Rasengan</span>
+            <h1 class="stage-title">Palm Detection: Summon the Rasengan</h1>
+          </div>
+          <div class="banner-right">
+            <span class="stage-gesture-tag" id="slide4GestureDetected">AR Gesture: Open your palm to form Rasengan</span>
+          </div>
+        </div>
+
+        <!-- Full-Width AR Canvas Frame -->
+        <div class="stage-frame">
+          <div class="canvas-wrapper">
+            <canvas id="canvas-slide-4" width="1200" height="660"></canvas>
+            
+            <!-- Quick Gesture Trigger Overlay Bar -->
+            <div class="floating-gesture-hud">
+              <span class="hud-label">⚡ PRESENTATION GESTURE ACTION:</span>
+              <span style="margin-left: 10px; color: #00f2fe; font-weight: 600;">Turn on your camera and open your palm</span>
+            </div>
+          </div>
+
+          <div class="stage-footer">
+            <div class="wire-legend">
+              <span class="legend-item"><span class="dot yellow"></span> Rasengan Energy Core</span>
+              <span class="legend-item"><span class="dot orange"></span> Spinning Chakra Layers</span>
+              <span class="legend-item"><span class="dot matrix-dot"></span> Real-time Hand Palm Detection</span>
+            </div>
+            <div class="gesture-hint">
+              <strong>AR Presenter Cue:</strong> Open your palm facing the camera to form the Rasengan. The more open your palm, the more intense the chakra spiral becomes!
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Slide Navigation Bar & Timeline -->
+  <footer class="deck-footer">
+    <div class="nav-container">
+      <button class="nav-btn prev-btn" id="prevSlideBtn" disabled>
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        <span>Previous</span>
+      </button>
+
+      <div class="slide-timeline">
+        <button class="timeline-step active" data-goto="1">
+          <span class="step-circle">1</span>
+          <span class="step-label">Legacy State</span>
+        </button>
+        <div class="step-connector"></div>
+        <button class="timeline-step" data-goto="2">
+          <span class="step-circle">2</span>
+          <span class="step-label">The Refactor</span>
+        </button>
+        <div class="step-connector"></div>
+        <button class="timeline-step" data-goto="3">
+          <span class="step-circle">3</span>
+          <span class="step-label">Target Architecture</span>
+        </button>
+        <div class="step-connector"></div>
+        <button class="timeline-step" data-goto="4">
+          <span class="step-circle">4</span>
+          <summary style="cursor: pointer; color: inherit; list-style: none;">Summary</summary>
+        </button>
+      </div>
+
+      <button class="nav-btn next-btn" id="nextSlideBtn">
+        <span>Next Slide</span>
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+  </footer>
+
+
+  <!-- Hidden Video Element for MediaPipe Webcam Feed -->
+  <video id="webcamVideo" class="webcam-hidden-feed" playsinline></video>
+
+  <!-- Modal for Fullscreen Visual Blueprint Inspection -->
+  <div class="modal-backdrop" id="imageModal">
+    <div class="modal-card">
+      <button class="modal-close-btn" onclick="closeAssetModal()">✕</button>
+      <img id="modalImg" src="" alt="High Definition Slide Blueprint">
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
